@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "set NODE_ENV=development&& nodemon dist/app.js",
+    "test": "set NODE_ENV=test&&  nodemon dist/app.js",
+    "start": "set NODE_ENV=production&& node dist/app.js"
   },
   "keywords": [],
   "author": "",

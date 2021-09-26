@@ -1,4 +1,5 @@
 import { Request, Response } from "express"
+import { Op } from"sequelize"
 import Usuario from "../models/usuario"
 
 
@@ -6,7 +7,11 @@ export const getUsuarios = async ( req: Request , res: Response ) => {
 
     try {
 
-        const usuarios = await Usuario.findAll();
+        const usuarios = await Usuario.findAll({
+            where: {
+                estado: true
+            }
+        });
 
         res.json({
             data: usuarios
@@ -55,7 +60,7 @@ export const getUsuario = async ( req: Request , res: Response ) => {
 }
 
 
-export const potUsuario = async ( req: Request , res: Response ) => {
+export const postUsuario = async ( req: Request , res: Response ) => {
 
     const { body } = req
 
@@ -106,9 +111,16 @@ export const putUsuario = async ( req: Request , res: Response ) => {
             })
         }
 
-        const existeEmail = await Usuario.findOne({
-            where: {
-                email: body.email
+        
+        //chequeamos que el email no exista para otro usuario
+         const existeEmail = await Usuario.findOne({
+            where: {            
+                [Op.and]: [
+                    { email: body.email },
+                    { id:  { 
+                        [Op.ne]: id
+                    } }
+                  ]
             }
         })
     
@@ -138,9 +150,7 @@ export const putUsuario = async ( req: Request , res: Response ) => {
 
 export const deleteUsuario = async ( req: Request , res: Response ) => {
 
-    const { id } = req.params
-
-    
+    const { id } = req.params    
 
     try {
 

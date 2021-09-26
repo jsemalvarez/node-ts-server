@@ -3,6 +3,7 @@ import userRoutes from '../routes/usuarios'
 import cors from 'cors' 
 import db from '../db/connection';
 
+
 class Server{
 
     private app: Application;
@@ -14,8 +15,9 @@ class Server{
     constructor(){
 
         this.app = express();
-        this.port = process.env.PORT || '8000';
+        this.port = process.env.PORT || '8010';
 
+        this.dbConnection()
         this.middlewares()
         this.routes()
 
@@ -41,7 +43,6 @@ class Server{
         // Lectura del body
         this.app.use( express.json() )
 
-
         // Carpeta pública
         this.app.use( express.static('public') )
 
@@ -53,7 +54,7 @@ class Server{
 
     listen(){
         this.app.listen( this.port, () => {
-            console.log('Servidor corriendo en el puerto!!!! ' + this.port )
+            console.log('Servidor corriendo en el puerto!! ' + this.port )
         })
     }
 
